@@ -47,3 +47,8 @@ npm run build
 - `src/primitives`：文本、图标、表面和按压反馈
 - `src/components`：可组合 UI 组件
 - `example`：最小使用示例
+
+## 性能报告
+
+- [中文详细性能优化报告](./PERFORMANCE_REPORT.zh-CN.md)
+- [Performance report (English)](./PERFORMANCE_REPORT.md)

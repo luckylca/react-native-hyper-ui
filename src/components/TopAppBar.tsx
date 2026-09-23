@@ -53,7 +53,7 @@ export interface AppTopAppBarProps {
 
 const HIDDEN_TRANSLATION_Y = 20;
 
-export function TopAppBar({ title = '', largeTitle, subtitle, large = false, scrollY, expansion = 88, back, actions, navigation }: AppTopAppBarProps) {
+export const TopAppBar = React.memo(function TopAppBar({ title = '', largeTitle, subtitle, large = false, scrollY, expansion = 88, back, actions, navigation }: AppTopAppBarProps) {
     const theme = useTheme();
     const reducedMotion = useReducedMotionPreference();
     const titleColor = theme.colors.onBackground;
@@ -116,7 +116,8 @@ export function TopAppBar({ title = '', largeTitle, subtitle, large = false, scr
             )}
         </View>
     );
-}
+});
+TopAppBar.displayName = 'HyperTopAppBar';
 
 function TitleText({ children }: { children: ReactNode }) {
     const theme = useTheme();

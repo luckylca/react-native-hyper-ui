@@ -17,7 +17,7 @@ export interface AppSegmentedControlProps {
 const CONTROL_HEIGHT = 56;
 const CONTROL_PADDING = 4;
 
-export function SegmentedControl({ tabs, selected = 0, onSelect }: AppSegmentedControlProps) {
+export const SegmentedControl = React.memo(function SegmentedControl({ tabs, selected = 0, onSelect }: AppSegmentedControlProps) {
     const theme = useTheme();
     const reducedMotion = useReducedMotionPreference();
     const [width, setWidth] = useState(0);
@@ -88,28 +88,49 @@ export function SegmentedControl({ tabs, selected = 0, onSelect }: AppSegmentedC
             ) : null}
 
             <View style={{ flex: 1, flexDirection: 'row' }}>
-                {tabs.map((tab, index) => {
-                    const isSelected = index === visualSelected;
-                    return (
-                        <Pressable
-                            key={`${tab}-${index}`}
-                            accessibilityRole="tab"
-                            accessibilityState={{ selected: isSelected }}
-                            onPress={() => handlePress(index)}
-                            style={{ flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 14 }}
-                        >
-                            <Text
-                                type="body1"
-                                weight={isSelected ? 'bold' : 'medium'}
-                                color={isSelected ? theme.colors.onBackground : theme.colors.onSurfaceVariantSummary}
-                                numberOfLines={1}
-                            >
-                                {tab}
-                            </Text>
-                        </Pressable>
-                    );
-                })}
+                {tabs.map((tab, index) => (
+                    <SegmentedTab
+                        key={`${tab}-${index}`}
+                        label={tab}
+                        index={index}
+                        selected={index === visualSelected}
+                        onSelect={handlePress}
+                    />
+                ))}
             </View>
         </View>
     );
-}
+});
+SegmentedControl.displayName = 'HyperSegmentedControl';
+
+const SegmentedTab = React.memo(function SegmentedTab({
+    label,
+    index,
+    selected,
+    onSelect,
+}: {
+    label: string;
+    index: number;
+    selected: boolean;
+    onSelect: (index: number) => void;
+}) {
+    const theme = useTheme();
+    return (
+        <Pressable
+            accessibilityRole="tab"
+            accessibilityState={{ selected }}
+            onPress={() => onSelect(index)}
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 14 }}
+        >
+            <Text
+                type="body1"
+                weight={selected ? 'bold' : 'medium'}
+                color={selected ? theme.colors.onBackground : theme.colors.onSurfaceVariantSummary}
+                numberOfLines={1}
+            >
+                {label}
+            </Text>
+        </Pressable>
+    );
+});
+SegmentedTab.displayName = 'HyperSegmentedTab';

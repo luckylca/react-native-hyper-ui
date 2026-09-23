@@ -69,7 +69,7 @@ const WheelItem = memo(function WheelItem({ index, value, currentIndex, offset, 
     );
 });
 
-export default function NumberWheel({
+const NumberWheel = React.memo(function NumberWheel({
     value,
     min = 0,
     max,
@@ -191,4 +191,6 @@ export default function NumberWheel({
             </GestureDetector>
         </View>
     );
-}
+});
+NumberWheel.displayName = 'HyperNumberWheel';
+export default NumberWheel;

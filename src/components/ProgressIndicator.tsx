@@ -11,7 +11,7 @@ type ProgressIndicatorProps = {
 };
 
 /** Determinate linear ProgressIndicator ported from miuix-vue. */
-export default function ProgressIndicator({ progress = 0, indeterminate = false, height = 6 }: ProgressIndicatorProps) {
+const ProgressIndicator = React.memo(function ProgressIndicator({ progress = 0, indeterminate = false, height = 6 }: ProgressIndicatorProps) {
     const theme = useTheme();
     const reducedMotion = useReducedMotionPreference();
     const [trackWidth, setTrackWidth] = useState(0);
@@ -58,4 +58,6 @@ export default function ProgressIndicator({ progress = 0, indeterminate = false,
             )}
         </View>
     );
-}
+});
+ProgressIndicator.displayName = 'HyperProgressIndicator';
+export default ProgressIndicator;

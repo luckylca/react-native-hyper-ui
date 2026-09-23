@@ -57,6 +57,7 @@ export const Slider = memo(function Slider({
 }: AppSliderProps) {
     const theme = useTheme();
     const tokens = theme.components.slider;
+    const trackHeight = tokens.height;
     const range = Math.max(maximumValue - minimumValue, 0);
     const clampedValue = clamp(value, minimumValue, maximumValue);
     const initialFraction = range > 0 ? (clampedValue - minimumValue) / range : 0;
@@ -89,10 +90,10 @@ export const Slider = memo(function Slider({
         );
     }, [clampedValue, currentValue, minimumValue, progress, range]);
 
-    const setValueFromPosition = (position: number) => {
+    const setValueFromPosition = useCallback((position: number) => {
         'worklet';
-        const thumbRadius = tokens.height / 2;
-        const available = Math.max(width.value - tokens.height, 0);
+        const thumbRadius = trackHeight / 2;
+        const available = Math.max(width.value - trackHeight, 0);
         const fraction = available > 0
             ? Math.max(0, Math.min(1, (position - thumbRadius) / available))
             : 0;
@@ -122,9 +123,9 @@ export const Slider = memo(function Slider({
             currentValue.value = next;
             runOnJS(emitChange)(next);
         }
-    };
+    }, [currentValue, emitChange, keyPoints, magnetThreshold, maximumValue, minimumValue, progress, range, step, trackHeight, width]);
 
-    const finishInteraction = () => {
+    const finishInteraction = useCallback(() => {
         'worklet';
         active.value = 0;
         const settledFraction = range > 0
@@ -132,9 +133,9 @@ export const Slider = memo(function Slider({
             : 0;
         progress.value = withSpring(settledFraction, sliderProgressIdle);
         runOnJS(emitComplete)(currentValue.value);
-    };
+    }, [active, currentValue, emitComplete, minimumValue, progress, range]);
 
-    const gesture = Gesture.Pan()
+    const gesture = useMemo(() => Gesture.Pan()
         .enabled(!disabled)
         .manualActivation(true)
         .onTouchesDown((event) => {
@@ -180,18 +181,18 @@ export const Slider = memo(function Slider({
         .onTouchesCancelled(() => {
             active.value = 0;
             activated.value = 0;
-        });
+        }), [active, activated, disabled, finishInteraction, setValueFromPosition, startX, startY]);
 
     const fillStyle = useAnimatedStyle(() => {
-        const thumbRadius = tokens.height / 2;
-        const available = Math.max(width.value - tokens.height, 0);
+        const thumbRadius = trackHeight / 2;
+        const available = Math.max(width.value - trackHeight, 0);
         return { width: thumbRadius + progress.value * available + thumbRadius };
     });
 
-    const knobRadius = tokens.height / 2 * tokens.knobRatio;
+    const knobRadius = trackHeight / 2 * tokens.knobRatio;
     const knobStyle = useAnimatedStyle(() => {
-        const thumbRadius = tokens.height / 2;
-        const available = Math.max(width.value - tokens.height, 0);
+        const thumbRadius = trackHeight / 2;
+        const available = Math.max(width.value - trackHeight, 0);
         const center = thumbRadius + progress.value * available;
         return {
             transform: [

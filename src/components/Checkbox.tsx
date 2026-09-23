@@ -16,7 +16,7 @@ export interface AppCheckboxProps {
 }
 
 /** MIUIX 26dp circular checkbox with sink press feedback and animated checkmark. */
-export function Checkbox({ value = false, onValueChange, disabled = false, accessibilityLabel }: AppCheckboxProps) {
+export const Checkbox = React.memo(function Checkbox({ value = false, onValueChange, disabled = false, accessibilityLabel }: AppCheckboxProps) {
     const theme = useTheme();
     const reduced = useReducedMotionPreference();
     const checked = useSharedValue(value ? 1 : 0);
@@ -69,4 +69,5 @@ export function Checkbox({ value = false, onValueChange, disabled = false, acces
             </Animated.View>
         </Pressable>
     );
-}
+});
+Checkbox.displayName = 'HyperCheckbox';

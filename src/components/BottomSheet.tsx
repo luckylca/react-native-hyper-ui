@@ -40,7 +40,7 @@ export interface AppBottomSheetProps {
 const DISMISS_THRESHOLD = 150;
 const UPWARD_DAMPING = 0.1;
 
-export function BottomSheet({
+export const BottomSheet = React.memo(function BottomSheet({
     visible = false,
     onClose,
     title,
@@ -192,4 +192,5 @@ export function BottomSheet({
             </GestureHandlerRootView>
         </Modal>
     );
-}
+});
+BottomSheet.displayName = 'HyperBottomSheet';

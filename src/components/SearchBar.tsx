@@ -48,7 +48,7 @@ export interface AppSearchBarProps {
     style?: StyleProp<ViewStyle>;
 }
 
-export function SearchBar({
+export const SearchBar = React.memo(function SearchBar({
     value = '',
     onChangeText,
     onSearch,
@@ -245,4 +245,5 @@ export function SearchBar({
             )}
         </View>
     );
-}
+});
+SearchBar.displayName = 'HyperSearchBar';

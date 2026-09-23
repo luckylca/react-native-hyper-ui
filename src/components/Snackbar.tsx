@@ -35,7 +35,7 @@ export interface AppSnackbarProps {
 const ENTER_OFFSET = 24;
 const REDUCED_DURATION = 120;
 
-export function Snackbar({ visible = false, message, actionLabel, onAction, withDismissAction = false, onDismiss, bottomInset = 0 }: AppSnackbarProps) {
+export const Snackbar = React.memo(function Snackbar({ visible = false, message, actionLabel, onAction, withDismissAction = false, onDismiss, bottomInset = 0 }: AppSnackbarProps) {
     const theme = useTheme();
     const reducedMotion = useReducedMotionPreference();
 
@@ -101,7 +101,8 @@ export function Snackbar({ visible = false, message, actionLabel, onAction, with
             </Animated.View>
         </View>
     );
-}
+});
+Snackbar.displayName = 'HyperSnackbar';
 
 function SnackbarAction({ label, onPress }: { label: string; onPress?: () => void }) {
     const theme = useTheme();

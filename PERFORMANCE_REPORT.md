@@ -31,9 +31,18 @@ Built and installed the optimized Release APK on the connected Xiaomi 2405CPX3DC
 
 The app deep link landed on onboarding, so this device check did not reach the design-system showcase or capture a representative list-scroll FPS trace. Animation worklet and preset files were not changed; this is source-level evidence that the motion parameters are preserved, not a measured animation frame-time claim.
 
+## Follow-up optimization
+
+- Added shallow prop memoization to `Checkbox`, `Input`, `ProgressIndicator`, `NumberWheel`, `NavigationBar`, `SegmentedControl`, `TopAppBar`, `SearchBar`, `Dialog`, `BottomSheet`, `Menu`, and `Snackbar`. Their own state updates and theme / reduced-motion context updates still render normally; equal props from an unrelated parent render can now bail out.
+- Split navigation items and segmented tabs into memoized leaves. With stable item / tab inputs and callbacks, a selected-index change updates the old and new selected leaves instead of rebuilding every row. The indicator animation remains on its existing Reanimated shared value.
+- Memoized the Slider pan gesture and its worklet callbacks against the actual interaction configuration. A controlled value update alone no longer creates a new gesture builder; range, step, key points, disabled state, and callbacks still refresh the handler when they change.
+- Kept all animation worklets, spring / timing presets, gesture thresholds, dimensions, colors, and view styles unchanged. These changes target React reconciliation and gesture-builder churn; they do not claim a measured device FPS improvement.
+
+This follow-up was checked by package and app typechecks plus a fresh package build. No device scroll / animation trace was collected for this pass, so the quantitative benchmark and screenshot figures above apply to the earlier memoization change only.
+
 ## Validation
 
-- `npm run typecheck` passed in the app root.
-- `npm run typecheck` passed in `project/react-native-hyper-ui`.
-- `npm run build` passed in `project/react-native-hyper-ui` (CommonJS, ES module, and declaration output generated).
+- `npm run typecheck` passed in the app root after the follow-up changes.
+- `npm run typecheck` passed in `project/react-native-hyper-ui` after the follow-up changes.
+- `npm run build` passed in `project/react-native-hyper-ui` after the follow-up changes (CommonJS, ES module, and declaration output generated).
 - `npm run android:release:arm64` completed; Release APK installed successfully.

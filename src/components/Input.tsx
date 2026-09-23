@@ -52,7 +52,7 @@ export interface AppInputProps {
     style?: StyleProp<ViewStyle>;
 }
 
-export function Input({
+export const Input = React.memo(function Input({
     value = '',
     onChangeText,
     label,
@@ -188,4 +188,5 @@ export function Input({
             {trailing != null && <View style={{ justifyContent: 'center', paddingRight: theme.spacing.lg }}>{trailing}</View>}
         </Animated.View>
     );
-}
+});
+Input.displayName = 'HyperInput';

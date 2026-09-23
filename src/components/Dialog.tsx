@@ -36,7 +36,7 @@ export interface AppDialogProps {
 const LARGE_MIN_WIDTH = 840;
 const LARGE_MIN_HEIGHT = 480;
 
-export function Dialog({ visible = false, onClose, title, summary, closeOnClickModal = true, children }: AppDialogProps) {
+export const Dialog = React.memo(function Dialog({ visible = false, onClose, title, summary, closeOnClickModal = true, children }: AppDialogProps) {
     const theme = useTheme();
     const reducedMotion = useReducedMotionPreference();
     const dialogBackground = theme.dark ? '#242424' : '#FFFFFF';
@@ -147,4 +147,5 @@ export function Dialog({ visible = false, onClose, title, summary, closeOnClickM
             </Animated.View>
         </Modal>
     );
-}
+});
+Dialog.displayName = 'HyperDialog';

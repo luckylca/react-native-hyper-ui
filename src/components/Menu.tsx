@@ -52,7 +52,7 @@ const ITEM_PADDING_VERTICAL_MIDDLE = 12; // middle items
 
 type Placement = 'below' | 'above' | 'middle';
 
-export function Menu({ visible = false, onClose, anchor, items = [], selectedIndex }: AppMenuProps) {
+export const Menu = React.memo(function Menu({ visible = false, onClose, anchor, items = [], selectedIndex }: AppMenuProps) {
     const theme = useTheme();
     const { width: windowW, height: windowH } = useWindowDimensions();
 
@@ -166,7 +166,8 @@ export function Menu({ visible = false, onClose, anchor, items = [], selectedInd
             </Animated.View>
         </Modal>
     );
-}
+});
+Menu.displayName = 'HyperMenu';
 
 function MenuItemRow({
     item,
